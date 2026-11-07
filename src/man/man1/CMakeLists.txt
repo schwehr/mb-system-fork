@@ -103,21 +103,6 @@ set(manpages
     mbvelocitytool.1
     mbvoxelclean.1)
 
-if(buildDeprecated)
-    set(deprecated
-        mb7k2ss.1
-        mb7kpreprocess.1
-        mbauvnavusbl.1
-        mbhsdump.1
-        mbhysweeppreprocess.1
-        mbkongsbergpreprocess.1
-        mbneptune2esf.1
-        mbotpsold.1
-        mbrollbias.1
-        mbstripnan.1
-        mbswplspreprocess.1)
-endif()
-
 if(buildTRN)
     set(trn
         mbgrd2octree.1
@@ -134,14 +119,7 @@ if(buildOpenCV)
         mbphotomosaic.1)
 endif()
 
-if(buildQt6Tools)
-    set(qt6tools
-        mbwcdview.1
-        mbvelocitytool-qt.1
-        mbedit-qt.1)
-endif()
-
-install(FILES ${manpages} ${deprecated} ${trn} ${photo} ${qt6tools} DESTINATION ${CMAKE_INSTALL_MANPAGES}/man1)
+install(FILES ${manpages} ${trn} ${photo} DESTINATION ${CMAKE_INSTALL_MANPAGES}/man1)
 
 message(STATUS "Installed man pages to ${CMAKE_INSTALL_MANPAGES}/man1")
 

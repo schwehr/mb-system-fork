@@ -52,18 +52,11 @@ if(mbio_py_tests_ok)
       mbio_py_constants_test
       mbio_py_reader_test
       mbio_py_watercolumn_test
-      mbio_py_watercolumn_all_test
-      mbpy_wcdview_test)
+      mbio_py_watercolumn_all_test)
   foreach(test ${tests})
     add_test(NAME ${test} COMMAND ${Python3_EXECUTABLE} "${CMAKE_CURRENT_SOURCE_DIR}/${test}.py")
     set_tests_properties(${test} PROPERTIES ENVIRONMENT "${test_environment}")
   endforeach()
-
-  if(buildQt6Tools)
-    add_test(NAME mbwcdview_test COMMAND ${Python3_EXECUTABLE} "${CMAKE_CURRENT_SOURCE_DIR}/mbwcdview_test.py")
-    set_tests_properties(mbwcdview_test PROPERTIES ENVIRONMENT
-                         "${test_environment};MBWCDVIEW=$<TARGET_FILE:mbwcdview>")
-  endif()
 else()
   message("mbio_py tests not added: they need python3 with numpy and BUILD_SHARED_LIBS=ON")
 endif()

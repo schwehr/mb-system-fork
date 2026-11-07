@@ -66,6 +66,4 @@ set(mbio_py_examples
 install(FILES ${mbio_py_modules} ${CMAKE_CURRENT_BINARY_DIR}/mbio_py/_config.py
         DESTINATION ${mbpy_install_dir}/mbio_py)
 install(FILES ${mbio_py_examples} DESTINATION ${mbpy_install_dir}/examples)
-install(FILES wcd_viewer/wcd_viewer.py DESTINATION ${mbpy_install_dir}/wcd_viewer)
 install(FILES README.md DESTINATION ${mbpy_install_dir})
-install(PROGRAMS mbpy_wcdview DESTINATION ${CMAKE_INSTALL_BINDIR})

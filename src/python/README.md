@@ -7,10 +7,7 @@ MBIO reads, and gives access to water column data (`mb_extract_wc()`, at present
 for Kongsberg data: *.kmwcd files, format 261, and *.wcd and *.all files, formats 58
 and 59).
 
-It is meant for prototypes and small tools in Python. Two examples come with it:
-the scripts in `examples/` and the water column viewer `mbpy_wcdview`
-(`wcd_viewer/wcd_viewer.py`). The C++/Qt6 program `mbwcdview` is the fast
-viewer for the same task.
+It is meant for prototypes and small tools in Python: the scripts in `examples/`.
 
 ## Installation
 
@@ -20,8 +17,6 @@ viewer for the same task.
 |---|---|
 | `<prefix>/share/mbsystem/python/mbio_py/` | the package |
 | `<prefix>/share/mbsystem/python/examples/` | example scripts |
-| `<prefix>/share/mbsystem/python/wcd_viewer/` | the water column viewer |
-| `<prefix>/bin/mbpy_wcdview` | starts the viewer |
 
 `libmbio` must be built as a shared library (`BUILD_SHARED_LIBS=ON`, the
 default). The package finds it in this order:
@@ -37,19 +32,16 @@ default). The package finds it in this order:
 |---|---|
 | mbio_py | Python >= 3.11 (tested with 3.14), numpy |
 | examples | matplotlib |
-| mbpy_wcdview | Python >= 3.11, numpy, matplotlib, PySide6 (Qt6 for Python) |
 
 MacPorts (macOS), for example with Python 3.13:
 
-    sudo port install python313 py313-numpy py313-matplotlib py313-pyside6
+    sudo port install python313 py313-numpy py313-matplotlib
     sudo port select --set python3 python313
 
-Any platform, in a virtual environment (Linux distributions often ship numpy and
-matplotlib, but not always PySide6):
+Any platform, in a virtual environment:
 
     python3 -m venv ~/mbpy
-    ~/mbpy/bin/pip install numpy matplotlib PySide6
-    ~/mbpy/bin/python <prefix>/bin/mbpy_wcdview
+    ~/mbpy/bin/pip install numpy matplotlib
 
 Windows: install Python from python.org and use the same `pip install`;
 MB-System's `libmbio.dll` must be found (set `MBSYSTEM_LIBMBIO`).
@@ -176,22 +168,7 @@ detections are flagged by the sonar.
 Run them with the installed copy, for example
 `python3 <prefix>/share/mbsystem/python/examples/plot_paired.py 0030_20250208_100905.kmall 100 ping100.png`.
 
-## The water column viewer: mbpy_wcdview
-
-    mbpy_wcdview 0080_20250618_223434.kmwcd
-
-Opens a *.kmwcd, *.kmall, *.wcd or *.all (or use the Open button) and finds the other file of
-the line. Controls: depth and amplitude ranges, fixed across track scale,
-`Bottom` (soundings of the matching survey ping: red amplitude, dark blue phase,
-filled good, hollow flagged), `WC bottom` (the water column's own bottom
-detections), `Ray trace (SVP)` (on when a profile is found), a slider stepping
-one swath at a time (also mouse wheel and arrow keys), replay, `Pick` (positions
-into a table saved as text), `Save Image` (twice the screen resolution, with the
-file name and ping information). Without a survey file: no soundings, depth below the
-transducer, navigation from the position records of the water column file, picks use the course
-over ground. See also `man mbpy_wcdview`.
-
 ## Tests
-`test/python` in the source tree (`ctest -R "mbio_py|wcdview"`), run with the
+`test/python` in the source tree (`ctest -R "mbio_py"`), run with the
 library of the build; they write small synthetic .kmall/.kmwcd and .wcd files and need
-python3 with numpy (PySide6 and matplotlib for the viewer test).
+python3 with numpy.
