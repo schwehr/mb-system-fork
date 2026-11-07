@@ -19,10 +19,7 @@ src/**/Makefile
 src/**/*.exe
 src/**/*.jar
 src/gsf/dump_gsf
-src/mbedit/mbedit
-src/mbeditviz/mbeditviz
 src/mbgrd2gltf/mbgrd2gltf
-src/mbgrdviz/mbgrdviz
 src/mbio/stamp-h1
 src/mbio/projections.h
 src/mbnavadjust/mbnavadjust
@@ -59,8 +56,6 @@ src/mbtrnav/trnclient-test
 src/mbtrnav/trnif-test
 src/mbtrnav/trnifsvr-test
 src/mbvelocitytool/mbvelocitytool
-src/otps/mbotps
-src/otps/otps.h
 src/utilities/tmp/*
 src/utilities/levitus.h
 src/utilities/mbabsorption

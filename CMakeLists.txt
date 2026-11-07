@@ -38,28 +38,6 @@
 # requires groff and perl. If any required tool is missing, CMake prints a
 # status message at configure time and the target is simply unavailable.
 #
-#   brew install pandoc weasyprint groff
-#
-# - changelog: regenerates the top-level ChangeLog.html and ChangeLog.pdf
-#   from ChangeLog.md (via pandoc + weasyprint), replacing the previously
-#   manual MacDown export workflow.
-#
-#     cmake --build . --target changelog
-#
-# - buildandinstall: regenerates the top-level BuildAndInstall.pdf from
-#   BuildAndInstall.md (via pandoc + weasyprint, using ChangeLog_style.css plus
-#   the print overrides in src/htmlsrc/BuildAndInstall_print.css), replacing
-#   the previously manual MacDown export workflow.
-#
-#     cmake --build . --target buildandinstall
-#
-# - htmldocs: regenerates src/html/*.html and src/html/*.pdf from the man
-#   pages in src/man/ plus ChangeLog.md/COPYING.md/GPL.md (via man2html,
-#   groff, and pandoc + weasyprint), replacing the previously manual
-#   make_mbhtml workflow.
-#
-#     cmake --build . --target htmldocs
-#
 #------------------------------------------------------------------------------
 
 message("----------------------------------------------------------")
@@ -291,11 +269,9 @@ add_subdirectory(src/gmt)
 # Executables
 add_subdirectory(src/utilities)
 add_subdirectory(src/svptools)
-add_subdirectory(src/macros)
 add_subdirectory(src/python)
 add_subdirectory(src/mbgrd2gltf)
 add_subdirectory(src/mbmesh)
-add_subdirectory(src/otps)
 # src/mbnavadjust always builds the mbnavadjust_core library and the
 # Motif/X11-free mbnavadjustmerge CLI; the mbnavadjust GUI (and
 # mbnavadjustfine) are gated internally by that directory's own
@@ -303,9 +279,6 @@ add_subdirectory(src/otps)
 add_subdirectory(src/mbnavadjust)
 if(buildGUIs)
   add_subdirectory(src/mbview)
-  add_subdirectory(src/mbedit)
-  add_subdirectory(src/mbgrdviz)
-  add_subdirectory(src/mbeditviz)
   add_subdirectory(src/mbnavedit)
   add_subdirectory(src/mbvelocitytool)
 endif()
@@ -335,12 +308,8 @@ if(buildTests)
     add_subdirectory(test/gsf)
   endif()
   add_subdirectory(test/mbgrd2gltf)
-  add_subdirectory(test/otps)
   add_subdirectory(test/mbnavadjust)
   if(buildGUIs)
-    add_subdirectory(test/mbedit)
-    add_subdirectory(test/mbgrdviz)
-    add_subdirectory(test/mbeditviz)
     add_subdirectory(test/mbnavedit)
     add_subdirectory(test/mbvelocitytool)
   endif()
@@ -352,71 +321,6 @@ endif()
 add_subdirectory(src/man)
 add_subdirectory(src/html)
 add_subdirectory(src/share)
-# src/htmlsrc provides the optional "htmldocs" target that regenerates the
-# man page HTML/PDF documentation installed from src/html; it depends on the
-# mbformat target built above in src/utilities.
-add_subdirectory(src/htmlsrc)
-
-# Optional target to regenerate ChangeLog.html and ChangeLog.pdf from
-# ChangeLog.md, replacing the previously-manual MacDown export workflow.
-# Not part of the default build - run explicitly via:
-#   cmake --build . --target changelog
-find_program(PANDOC_EXECUTABLE pandoc)
-find_program(WEASYPRINT_EXECUTABLE weasyprint)
-if(PANDOC_EXECUTABLE AND WEASYPRINT_EXECUTABLE)
-  add_custom_command(
-    OUTPUT ${CMAKE_SOURCE_DIR}/ChangeLog.html
-    COMMAND ${PANDOC_EXECUTABLE} ${CMAKE_SOURCE_DIR}/ChangeLog.md
-            -f gfm -t html5 --standalone
-            --metadata title=ChangeLog
-            --css=${CMAKE_SOURCE_DIR}/src/htmlsrc/ChangeLog_style.css
-            --embed-resources
-            -o ${CMAKE_SOURCE_DIR}/ChangeLog.html
-    DEPENDS ${CMAKE_SOURCE_DIR}/ChangeLog.md ${CMAKE_SOURCE_DIR}/src/htmlsrc/ChangeLog_style.css
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-    COMMENT "Generating ChangeLog.html from ChangeLog.md via pandoc"
-    VERBATIM)
-  add_custom_command(
-    OUTPUT ${CMAKE_SOURCE_DIR}/ChangeLog.pdf
-    COMMAND ${WEASYPRINT_EXECUTABLE} ${CMAKE_SOURCE_DIR}/ChangeLog.html ${CMAKE_SOURCE_DIR}/ChangeLog.pdf
-    DEPENDS ${CMAKE_SOURCE_DIR}/ChangeLog.html
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-    COMMENT "Generating ChangeLog.pdf from ChangeLog.html via weasyprint"
-    VERBATIM)
-  add_custom_target(changelog
-    DEPENDS ${CMAKE_SOURCE_DIR}/ChangeLog.html ${CMAKE_SOURCE_DIR}/ChangeLog.pdf)
-
-  # BuildAndInstall.pdf: only the PDF is kept in the repository, so the
-  # intermediate HTML is written to the build directory.
-  add_custom_command(
-    OUTPUT ${CMAKE_BINARY_DIR}/BuildAndInstall.html
-    COMMAND ${PANDOC_EXECUTABLE} ${CMAKE_SOURCE_DIR}/BuildAndInstall.md
-            -f gfm -t html5 --standalone
-            "--metadata=pagetitle:How to Download, Build, and Install MB-System"
-            --css=${CMAKE_SOURCE_DIR}/src/htmlsrc/ChangeLog_style.css
-            --css=${CMAKE_SOURCE_DIR}/src/htmlsrc/BuildAndInstall_print.css
-            --embed-resources
-            -o ${CMAKE_BINARY_DIR}/BuildAndInstall.html
-    DEPENDS ${CMAKE_SOURCE_DIR}/BuildAndInstall.md
-            ${CMAKE_SOURCE_DIR}/src/htmlsrc/ChangeLog_style.css
-            ${CMAKE_SOURCE_DIR}/src/htmlsrc/BuildAndInstall_print.css
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-    COMMENT "Generating BuildAndInstall.html from BuildAndInstall.md via pandoc"
-    VERBATIM)
-  add_custom_command(
-    OUTPUT ${CMAKE_SOURCE_DIR}/BuildAndInstall.pdf
-    COMMAND ${WEASYPRINT_EXECUTABLE} ${CMAKE_BINARY_DIR}/BuildAndInstall.html ${CMAKE_SOURCE_DIR}/BuildAndInstall.pdf
-    DEPENDS ${CMAKE_BINARY_DIR}/BuildAndInstall.html
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-    COMMENT "Generating BuildAndInstall.pdf from BuildAndInstall.html via weasyprint"
-    VERBATIM)
-  add_custom_target(buildandinstall
-    DEPENDS ${CMAKE_SOURCE_DIR}/BuildAndInstall.pdf)
-else()
-  message(STATUS "pandoc and/or weasyprint not found - 'changelog' and "
-                  "'buildandinstall' build targets unavailable "
-                  "(install via: brew install pandoc weasyprint)")
-endif()
 
 message("----------------------------------------------------------")
 message("CMAKE_SYSTEM_NAME: ${CMAKE_SYSTEM_NAME}")

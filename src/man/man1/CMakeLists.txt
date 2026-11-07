@@ -14,8 +14,6 @@ set(manpages
     mbdatalist.1
     mbdefaults.1
     mbdumpesf.1
-    mbedit.1
-    mbeditviz.1
     mbextractsegy.1
     mbfilter.1
     mbfnv2navlab.1
@@ -25,7 +23,6 @@ set(manpages
     mbgrd2gltf.1
     mbgrd2obj.1
     mbgrdtiff.1
-    mbgrdviz.1
     mbgrid.1
     mbhistogram.1
     mbhistory.1
@@ -72,10 +69,8 @@ set(manpages
     mbnavadjustmerge.1
     mbnavedit.1
     mbnavlist.1
-    mbotps.1
     mbpreprocess.1
     mbprocess.1
-    mbpy_wcdview.1
     mbpy_grd3dplot.1
     mbpy_grdplot.1
     mbpy_grdtiff.1
