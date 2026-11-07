@@ -20,6 +20,5 @@
   - [share](share): 1 degree model of ocean water properties
 - Terrain Relative Navigation
   - [mbtrn](mbtrn): Terrain Relative Navigation (TRN)
-  - [mbtrnav](mbtrnav): Terrain Relative Navigation (TRN)
   - [mbtrnutils](mbtrnutils): Terrain Relative Navigation (TRN)
   
