@@ -9,7 +9,6 @@
   - [mbview](mbview): Library for 2D/3D visualization
   - [surf](surf): I/O for Hydrosweep and Fansweep multibeam sonars
 - Programs
-  - [deprecated](deprecated): Old command line libraries
   - [macros](macros): Perl based command line programs
   - [mbedit](mbedit): Waterfall swath bathymetry editor
   - [mbeditviz](mbeditviz): Geographically oriented swath bathymetry editor
